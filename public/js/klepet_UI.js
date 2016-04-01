@@ -99,6 +99,15 @@ $(document).ready(function() {
     for (var i=0; i < uporabniki.length; i++) {
       $('#seznam-uporabnikov').append(divElementEnostavniTekst(uporabniki[i]));
     }
+    
+      // v vnosno polje napise kar mora in nastavi fokus na vnos. polje
+     $('#seznam-uporabnikov div').click(function() {
+      $('#poslji-sporocilo').val("/zasebno \"" + $(this).text() + "\" ");
+      // verzija 2
+      //document.getElementById("poslji-sporocilo").value = "/zasebno...";
+      $('#poslji-sporocilo').focus();
+    });
+    
   });
 
   setInterval(function() {
