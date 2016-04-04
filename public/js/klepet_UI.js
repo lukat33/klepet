@@ -144,6 +144,6 @@ function dodajVideo(vhod){
     id = RegExp.$1;
   }
   //console.log(RegExp.$1);
-  vhod = vhod.replace(/https:\/\/www\.youtube\.com\/[\S]+/gi,"<iframe src='https://www.youtube.com/embed/" + id + "'allowfullscreen></iframe>");
+  vhod =vhod + "</br>"+ vhod.replace(/https:\/\/www\.youtube\.com\/[\S]+/gi,"<iframe src='https://www.youtube.com/embed/" + id + "'allowfullscreen></iframe>");
   return vhod;
 }
