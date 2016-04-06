@@ -21,7 +21,7 @@ function divElementHtmlTekst(sporocilo) {
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
-  sporocilo = dodajSliko(sporocilo);
+  sporocilo += dodajSliko(sporocilo);
   var sistemskoSporocilo;
   var dolzinaSporocila = sporocilo.length;
 
@@ -140,9 +140,15 @@ function dodajSmeske(vhodnoBesedilo) {
   return vhodnoBesedilo;
 }
 
-function dodajSliko(vhod) {
-   if (vhod.match(/(.png|.jpg|.gif)/g)) {
-    vhod = vhod.replace(vhod, "<img src='"+vhod+"' id='slika'/>");
+ function dodajSliko(vhod) {
+  var slika = "";
+  slikeUrl = vhod.match(new RegExp(/(http:\/\/|https:\/\/)\S+(\.jpg|.png|.gif)/, 'gi'));
+
+  for (var i in slikeUrl) {
+  if (!(slikeUrl[i].match(/(smiley|kiss|wink|like|sad\.png)/))){
+    slika += slikeUrl[i].replace(slikeUrl[i], ('<img src="'+ slikeUrl[i] +'" id="slika"/>'+"<br>"));
   }
-  return vhod;
+  
+  }
+  return slika;
  }
