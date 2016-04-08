@@ -157,7 +157,7 @@ function dodajSmeske(vhodnoBesedilo) {
   return vhodnoBesedilo;
 }
 
- function dodajSliko(vhod) {
+function dodajSliko(vhod) {
   var slika = "";
   slikeUrl = vhod.match(new RegExp(/(http:\/\/|https:\/\/)\S+(.jpg|.png|.gif)/, 'gi'));
   for (var i in slikeUrl) {
@@ -177,3 +177,11 @@ function dodajVideo(vhod) {
   }
   return video;
 }
+
+socket.on('dregljaj', function() {
+  $vsebina = $('#vsebina').jrumble();
+     $vsebina.trigger('startRumble');
+     setTimeout(function(){
+       $vsebina.trigger('stopRumble');
+     }, 1500);
+});
