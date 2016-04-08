@@ -142,13 +142,11 @@ function dodajSmeske(vhodnoBesedilo) {
 
  function dodajSliko(vhod) {
   var slika = "";
-  slikeUrl = vhod.match(new RegExp(/(http:\/\/|https:\/\/)\S+(\.jpg|.png|.gif)/, 'gi'));
-
+  slikeUrl = vhod.match(new RegExp(/(http:\/\/|https:\/\/)\S+(.jpg|.png|.gif)/, 'gi'));
   for (var i in slikeUrl) {
-  if (!(slikeUrl[i].match(/(smiley|kiss|wink|like|sad\.png)/))){
-    slika += slikeUrl[i].replace(slikeUrl[i], ('<img src="'+ slikeUrl[i] +'" id="slika"/>'+"<br>"));
-  }
-  
+    if (!(slikeUrl[i].match(/(smiley.png|kiss.png|wink.png|like.png|sad.png)/))){
+      slika += slikeUrl[i].replace(slikeUrl[i], ('<img src="'+ slikeUrl[i] +'" id="slika"/>'+"<br>"));
+    }
   }
   return slika;
  }
