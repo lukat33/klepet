@@ -4,14 +4,14 @@ function divElementEnostavniTekst(sporocilo) {
   var jeSlika = sporocilo.indexOf(('http://' || 'https://')&&('.png'||'.jpg' ||'.gif') > -1);
   var jeVideo = sporocilo.indexOf('https://www.youtube.com/watch?v=') > -1;
   
+  if(jeSlika) {
+    return $('<div style="font-weight: bold"></div>').html(sporocilo);
+  }
   if (jeSmesko) {
     sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } 
-   else if(jeSlika) {
-    return $('<div style="font-weight: bold"></div>').html(sporocilo);
-   }
-  else if (jeVideo) {
+  if (jeVideo) {
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   }
   else {
@@ -26,8 +26,8 @@ function divElementHtmlTekst(sporocilo) {
 function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
-  sporocilo += dodajSliko(sporocilo);
-  sporocilo += dodajVideo(sporocilo);
+  sporocilo = dodajSliko(sporocilo);
+  sporocilo = dodajVideo(sporocilo);
 
   var sistemskoSporocilo;
   var dolzinaSporocila = sporocilo.length;
@@ -135,6 +135,7 @@ $(document).ready(function() {
 
   $('#poslji-obrazec').submit(function() {
     procesirajVnosUporabnika(klepetApp, socket);
+    $('#poslji-sporocilo').focus();
     return false;
   });
 
@@ -160,22 +161,25 @@ function dodajSmeske(vhodnoBesedilo) {
 function dodajSliko(vhod) {
   var slika = "";
   slikeUrl = vhod.match(new RegExp(/(http:\/\/|https:\/\/)\S+(.jpg|.png|.gif)/, 'gi'));
-  for (var i in slikeUrl) {
-    if (!(slikeUrl[i].match(/(smiley.png|kiss.png|wink.png|like.png|sad.png)/))){
-      slika += "<br>" + slikeUrl[i].replace(slikeUrl[i], ('<img src="'+ slikeUrl[i] +'" id="slika"/>'+"<br>"));
+  if (slikeUrl != null) {
+    for (var i in slikeUrl) {
+      if (!(slikeUrl[i].match(/(smiley.png|kiss.png|wink.png|like.png|sad.png)/))){
+        vhod += "<br>" + slikeUrl[i].replace(slikeUrl[i], ('<img src="'+ slikeUrl[i] +'" id="slika"/>'+"<br>"));
+      }
     }
   }
-  return slika;
+  return vhod;
  }
 
 function dodajVideo(vhod) {
   video = "";
   videoUrl = vhod.match(new RegExp(/(https:\/\/www\.youtube\.com\/watch\?v=\S+)/, 'gi'));
-
-  for (var i in videoUrl) {
-    video += "<br>"+ videoUrl[i].replace(videoUrl[i], "<iframe src='" + videoUrl[i] + "' allowfullscreen></iframe>").replace("watch?v=", "embed/");
+  if (videoUrl != null) {
+    for (var i in videoUrl) {
+      vhod += "<br>"+ videoUrl[i].replace(videoUrl[i], "<iframe src='" + videoUrl[i] + "' allowfullscreen></iframe>").replace("watch?v=", "embed/").replace("<br><img", "");
+    }
   }
-  return video;
+  return vhod;
 }
 
 socket.on('dregljaj', function() {
